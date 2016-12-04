@@ -1,0 +1,37 @@
+group 'com.datamining'
+version '1.0-SNAPSHOT'
+
+//mainClassName = "com.model.Driver"
+apply plugin: 'java'
+
+//sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile group: 'nz.ac.waikato.cms.weka', name: 'weka-stable', version: '3.6.6'
+    compile "org.apache.hadoop:hadoop-common:2.7.3"
+    compile "org.apache.hadoop:hadoop-hdfs:2.7.3"
+    compile "org.apache.hadoop:hadoop-client:2.7.3"
+    compile "org.apache.hadoop:hadoop-mapreduce-client-jobclient:2.7.3"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir './'
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'com.model.Driver'
+        )
+    }
+}
