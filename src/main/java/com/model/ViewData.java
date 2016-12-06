@@ -33,7 +33,7 @@ public class ViewData {
 
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
             ArrayList<String> values = new ArrayList<String>(Arrays.asList(value.toString().split(",")));
-            if(!values.get(0).trim().equals("SAMPLING_EVENT_ID")) {
+            if(!values.get(0).trim().equals("LATITUDE")) {
                 ArrayList<String> al = new ArrayList<String>();
                 al.addAll(values.subList(2,8));
                 al.addAll(values.subList(955, 961));

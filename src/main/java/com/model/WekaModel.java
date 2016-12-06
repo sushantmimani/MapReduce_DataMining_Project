@@ -110,7 +110,6 @@ public class WekaModel {
     			try {
 					instances = cnv.getDataSet();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		    is.close();
