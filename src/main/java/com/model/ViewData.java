@@ -25,31 +25,26 @@ public class ViewData {
     public static class DataMapper extends Mapper<Object,Text,NullWritable,Text> {
 
         private MultipleOutputs mos;
-        ArrayList<String> val;
-        String header;
+
 
         public void setup(Context context) throws IOException, InterruptedException {
             mos = new MultipleOutputs(context);
-            URI[] files = context.getCacheFiles();
-			BufferedReader br = new BufferedReader(new FileReader(files[0].getPath()));
-			String strLineRead = "";
-			while ((strLineRead = br.readLine()) != null) {
-				val = new ArrayList<String>(Arrays.asList(strLineRead.split(",")));
-			}
-			header = val.toString().substring(2,val.size()-1);
-			context.write(NullWritable.get(), new Text(header));
         }
 
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
             ArrayList<String> values = new ArrayList<String>(Arrays.asList(value.toString().split(",")));
             if(!values.get(0).trim().equals("SAMPLING_EVENT_ID")) {
                 ArrayList<String> al = new ArrayList<String>();
-                al.addAll(values.subList(0, 19));
+                al.addAll(values.subList(2,8));
+                al.addAll(values.subList(955, 961));
+                al.addAll(values.subList(962,1016));
+                al.addAll(values.subList(1019, 1102));
                 al.addAll(values.subList(26,27));
-                al.addAll(values.subList(955, 1016));
-                al.addAll(values.subList(1018, values.size()));
-                if(!StringUtils.isNumeric(al.get(19).trim()))
-                	al.set(19, "0");
+                if(!StringUtils.isNumeric(al.get(149).trim())){
+                    al.set(149, "0");
+                }if(StringUtils.isNumeric(al.get(149).trim()) && (Integer.parseInt(al.get(149).trim())>0)){
+                    al.set(149, "1");
+                }
                 String val = al.toString();
                 val = val.substring(1,val.length()-1);
                 val = val.replaceAll("\\?", "0");
@@ -57,42 +52,19 @@ public class ViewData {
             }
             else {
                 ArrayList<String> al1 = new ArrayList<String>();
-                al1.addAll(values.subList(0, 19));
+                al1.addAll(values.subList(2,8));
+                al1.addAll(values.subList(955, 961));
+                al1.addAll(values.subList(962,1016));
+                al1.addAll(values.subList(1019, 1102));
                 al1.addAll(values.subList(26,27));
-                al1.addAll(values.subList(955, 1016));
-                al1.addAll(values.subList(1018, values.size()));
                 String val1 = al1.toString();
                 val1 = val1.substring(1,val1.length()-1);
                 mos.write("header",NullWritable.get(), new Text(val1));
             }
         }
-        
         public void cleanup(Context context) throws IOException, InterruptedException {
-        	mos.close();
+            mos.close();
         }
     }
-
-    public static class DataReducer extends Reducer<NullWritable,Text,NullWritable,Text> {
-
-        ArrayList<String> val;
-
-        public void setup(Context context) throws IOException, InterruptedException {
-            URI[] files = context.getCacheFiles();
-            BufferedReader br = new BufferedReader(new FileReader(files[0].getPath()));
-            String strLineRead = "";
-            while ((strLineRead = br.readLine()) != null) {
-                val = new ArrayList<String>(Arrays.asList(strLineRead.split(",")));
-            }
-            String header = val.toString();
-            header = header.substring(2,header.length()-1);
-            System.out.println(header);
-            context.write(NullWritable.get(), new Text(header));
-        }
-        public  void reduce(NullWritable key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-            for(Text value : values) {
-                context.write(NullWritable.get(), value);
-            }
-
-        }
-    }
+        
 }

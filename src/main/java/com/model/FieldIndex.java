@@ -27,32 +27,17 @@ public class FieldIndex {
 	    while (i<1 && (line = br.readLine()) != null) {
 	        String[] fields = line.split(",");
 	        ArrayList<String> values = new ArrayList<String>(Arrays.asList(fields));
-            al.addAll(values.subList(0, 19));
+            al.addAll(values.subList(2,8));
             al.addAll(values.subList(26,27));
-            al.addAll(values.subList(955, 1016));
-            al.addAll(values.subList(1018, values.size()));
+            al.addAll(values.subList(955, 961));
+            al.addAll(values.subList(962,1016));
+            al.addAll(values.subList(1019, 1102));
 	        i++;
 		    }
 	        PrintWriter writer = new PrintWriter("/Users/sushantmimani/Documents/NEU/MR/MapReduce_DataMining_Project/header.txt", "UTF-8");
 	        writer.println(al);
 	        writer.close();
 		}
-
-//	public static class HeaderMapper extends Mapper<Object,Text,NullWritable,Text> {
-//		public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-//			ArrayList<String> values = new ArrayList<String>(Arrays.asList(value.toString().split(",")));
-//			if(values.get(0).equals("SAMPLING_EVENT_ID")) {
-//				ArrayList<String> al = new ArrayList<String>();
-//				al.addAll(values.subList(0, 19));
-//				al.addAll(values.subList(26,27));
-//				al.addAll(values.subList(955, 1016));
-//				al.addAll(values.subList(1018, values.size()));
-//				String val = al.toString();
-//				val = val.substring(1,val.length()-1);
-//				context.write(NullWritable.get(), new Text(val));
-//			}
-//		}
-
-		}
+}
 	
 
