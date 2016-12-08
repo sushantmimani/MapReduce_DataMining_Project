@@ -33,17 +33,37 @@ public class ViewData {
 
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
             ArrayList<String> values = new ArrayList<String>(Arrays.asList(value.toString().split(",")));
-            if(!values.get(0).trim().equals("LATITUDE")) {
+            if(!values.get(0).trim().equals("SAMPLING_EVENT_ID")) {
                 ArrayList<String> al = new ArrayList<String>();
-                al.addAll(values.subList(2,8));
-                al.addAll(values.subList(955, 961));
-                al.addAll(values.subList(962,1016));
-                al.addAll(values.subList(1019, 1102));
+                al.addAll(values.subList(2,3));
+                al.addAll(values.subList(5, 6));
+                al.addAll(values.subList(7,8));
+                al.addAll(values.subList(957, 958));
+                al.addAll(values.subList(963,968));
+                al.addAll(values.subList(1015,1016));
+                al.addAll(values.subList(1024,1026));
+                al.addAll(values.subList(1036,1038));
+                al.addAll(values.subList(1050,1053));
+                al.addAll(values.subList(1058,1059));
+                al.addAll(values.subList(1061,1063));
+                al.addAll(values.subList(1073,1075));
+                al.addAll(values.subList(1076,1077));
+                al.addAll(values.subList(1082,1083));
+                al.addAll(values.subList(1092,1098));
+                al.addAll(values.subList(1101,1102));
                 al.addAll(values.subList(26,27));
-                if(!StringUtils.isNumeric(al.get(149).trim())){
-                    al.set(149, "0");
-                }if(StringUtils.isNumeric(al.get(149).trim()) && (Integer.parseInt(al.get(149).trim())>0)){
-                    al.set(149, "1");
+                
+//                for(int i=0; i<al.size()-1;i++) {
+//                	if(al.get(i).equals("?"))
+//                		al.set(i, "0");
+//                }
+//                al.set(al.size()-1, al.get(al.size()-1).trim());
+                
+                if(!StringUtils.isNumeric(al.get(31).trim())){
+                    al.set(31, "0");
+                }
+                    if(StringUtils.isNumeric(al.get(31).trim()) && (Integer.parseInt(al.get(31).trim())>0)){
+                    al.set(31, "1");
                 }
                 String val = al.toString();
                 val = val.substring(1,val.length()-1);
@@ -52,10 +72,22 @@ public class ViewData {
             }
             else {
                 ArrayList<String> al1 = new ArrayList<String>();
-                al1.addAll(values.subList(2,8));
-                al1.addAll(values.subList(955, 961));
-                al1.addAll(values.subList(962,1016));
-                al1.addAll(values.subList(1019, 1102));
+                al1.addAll(values.subList(2,3));
+                al1.addAll(values.subList(5, 6));
+                al1.addAll(values.subList(7,8));
+                al1.addAll(values.subList(957, 958));
+                al1.addAll(values.subList(963,968));
+                al1.addAll(values.subList(1015,1016));
+                al1.addAll(values.subList(1024,1026));
+                al1.addAll(values.subList(1036,1038));
+                al1.addAll(values.subList(1050,1053));
+                al1.addAll(values.subList(1058,1059));
+                al1.addAll(values.subList(1061,1063));
+                al1.addAll(values.subList(1073,1075));
+                al1.addAll(values.subList(1076,1077));
+                al1.addAll(values.subList(1082,1083));
+                al1.addAll(values.subList(1092,1098));
+                al1.addAll(values.subList(1101,1102));
                 al1.addAll(values.subList(26,27));
                 String val1 = al1.toString();
                 val1 = val1.substring(1,val1.length()-1);

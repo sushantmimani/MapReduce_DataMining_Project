@@ -24,6 +24,8 @@ import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.evaluation.NominalPrediction;
+import weka.classifiers.functions.LinearRegression;
+import weka.classifiers.functions.Logistic;
 import weka.classifiers.lazy.IBk;
 import weka.classifiers.rules.DecisionTable;
 import weka.classifiers.trees.DecisionStump;
@@ -61,7 +63,7 @@ public class WekaModel {
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
         	String val = value.toString();
             if(!val.contains("LATITUDE")){
-                for(int i = 0; i<10; i++) {
+                for(int i = 0; i<12; i++) {
                     double p = Math.random();
                     if(p<=0.2) {
                         context.write(new IntWritable(i), new Text(val));
@@ -122,7 +124,7 @@ public class WekaModel {
 		    NumericToNominal convert= new NumericToNominal();
 	        String[] options= new String[2];
 	        options[0]="-R";
-	        options[1]="150";  //range of variables to make numeric
+	        options[1]="32";  //range of variables to make numeric
 	        
 
 	        try {
@@ -135,36 +137,39 @@ public class WekaModel {
             // setting class attribute if the data format does not provide this information
             if (newData.classIndex() == -1)
             	newData.setClassIndex(newData.numAttributes() - 1);
-            
-            AttributeSelection filter = new AttributeSelection();  // package weka.filters.supervised.attribute!
-	        CfsSubsetEval eval = new CfsSubsetEval();
-	        GreedyStepwise search = new GreedyStepwise();
-	        search.setSearchBackwards(true);
-	        filter.setEvaluator(eval);
-	        filter.setSearch(search);
-	        filter.setInputFormat(newData);
-	        Instances latestData = Filter.useFilter(newData, filter);
-	        
-         // Do 2-split cross validation
-    		Instances[][] split = crossValidationSplit(latestData,2);
+          
+//            AttributeSelection filter = new AttributeSelection();  // package weka.filters.supervised.attribute!
+//	        CfsSubsetEval eval = new CfsSubsetEval();
+//	        GreedyStepwise search = new GreedyStepwise();
+//	        search.setSearchBackwards(true);
+//	        filter.setEvaluator(eval);
+//	        filter.setSearch(search);
+//	        filter.setInputFormat(newData);
+//	        Instances latestData = Filter.useFilter(newData, filter);
+
+	        // Do 2-split cross validation
+    		Instances[][] split = crossValidationSplit(newData,2);
      
     	// Separate split into training and testing arrays
     		Instances[] trainingSplits = split[0];
     		Instances[] testingSplits = split[1];
     		
-    	// Select model to train based on key
-    		switch(key.get()%5) {
-    		case 0 : models = new DecisionTable();
-    		break;
-    		case 1: models = new J48();
-    		break;
-    		case 2: models = new DecisionStump();
-    		break;
-    		case 3: models = new IBk();
-    		break;
-    		case 4: models = new RandomForest();
-    		break;
-    		}
+    		models = new Logistic();
+//    	// Select model to train based on key
+//    		switch(key.get()%5) {
+//    		case 0 : models = new Logistic();
+//    		break;
+//    		case 1: models = new J48();
+//    		break;
+//    		case 2: models = new DecisionStump();
+//    		break;
+//    		case 3: models = new IBk();
+//    		break;
+//    		case 4: models = new RandomForest();
+//    		break;
+//    		}
+    		
+    		System.out.println(newData.classAttribute()+":"+newData.classIndex());
     		
     		FastVector predictions = new FastVector();
     		for (int i = 0; i < trainingSplits.length; i++) {
@@ -175,7 +180,7 @@ public class WekaModel {
     		
     		double accuracy = calculateAccuracy(predictions);
     		System.out.println("Accuracy of model "+models.getClass().getSimpleName()+" is "+accuracy);
-				SerializationHelper.write(key.toString(), models);
+				SerializationHelper.write(models.getClass().getSimpleName()+key+".model", models);
 	        } catch (Exception e) {
 				e.printStackTrace();
 			}
