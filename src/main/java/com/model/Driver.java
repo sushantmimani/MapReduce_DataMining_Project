@@ -47,38 +47,37 @@ public class Driver {
 //            throw new Exception("Job failed");
 //        }
 
-////      Job to call the parser
-//        Job job1 = Job.getInstance(conf, "Train model");
-//        job1.setJarByClass(Driver.class);
-//        job1.setMapperClass(WekaModel.WekaMapper.class);
-//        job1.setReducerClass(WekaModel.WekaReducer.class);
-//        job1.setNumReduceTasks(17);
-//        job1.addCacheFile(new Path(otherArgs[1]+"/processedData/header-m-00000").toUri());
-//        job1.setOutputKeyClass(IntWritable.class);
-//        job1.setOutputValueClass(Text.class);
-//        FileInputFormat.addInputPath(job1, new Path(otherArgs[1]+"/processedData"));
-//        FileOutputFormat.setOutputPath(job1,
-//                new Path(otherArgs[1]+"/arff"));
-//        if (!job1.waitForCompletion(true)) {
-//            throw new Exception("Job failed");
-//        }
+//      Job to call the parser
+        Job job1 = Job.getInstance(conf, "Train model");
+        job1.setJarByClass(Driver.class);
+        job1.setMapperClass(WekaModel.WekaMapper.class);
+        job1.setReducerClass(WekaModel.WekaReducer.class);
+        job1.addCacheFile(new Path(otherArgs[1]+"/processedData/header-m-00000").toUri());
+        job1.setOutputKeyClass(IntWritable.class);
+        job1.setOutputValueClass(Text.class);
+        FileInputFormat.addInputPath(job1, new Path(otherArgs[1]+"/processedData"));
+        FileOutputFormat.setOutputPath(job1,
+                new Path(otherArgs[1]+"/arff"));
+        if (!job1.waitForCompletion(true)) {
+            throw new Exception("Job failed");
+        }
 
-//       Job to call the parser
-	      Job job2 = Job.getInstance(conf, "Extract header");
-	      job2.setJarByClass(Driver.class);
-	      conf.set("data", "unlabeled");
-	      job2.setMapperClass(ViewData.DataMapper.class);
-	      job2.setOutputKeyClass(NullWritable.class);
-	      job2.setOutputValueClass(Text.class);
-	      job2.setNumReduceTasks(0);
-	      FileInputFormat.addInputPath(job2, new Path(otherArgs[2]));
-	      FileOutputFormat.setOutputPath(job2,
-	              new Path(otherArgs[1]+"/unlabeledData"));
-	      MultipleOutputs.addNamedOutput(job2, "header", TextOutputFormat.class, NullWritable.class, Text.class);
-	      MultipleOutputs.addNamedOutput(job2, "data", TextOutputFormat.class, NullWritable.class, Text.class);
-	      boolean ok = job2.waitForCompletion(true);
-	      if (!ok) {
-	          throw new Exception("job2 failed");
-	      }
+////       Job to call the parser
+//	      Job job2 = Job.getInstance(conf, "Extract header");
+//	      job2.setJarByClass(Driver.class);
+//	      conf.set("data", "unlabeled");
+//	      job2.setMapperClass(ViewData.DataMapper.class);
+//	      job2.setOutputKeyClass(NullWritable.class);
+//	      job2.setOutputValueClass(Text.class);
+//	      job2.setNumReduceTasks(0);
+//	      FileInputFormat.addInputPath(job2, new Path(otherArgs[2]));
+//	      FileOutputFormat.setOutputPath(job2,
+//	              new Path(otherArgs[1]+"/unlabeledData"));
+//	      MultipleOutputs.addNamedOutput(job2, "header", TextOutputFormat.class, NullWritable.class, Text.class);
+//	      MultipleOutputs.addNamedOutput(job2, "data", TextOutputFormat.class, NullWritable.class, Text.class);
+//	      boolean ok = job2.waitForCompletion(true);
+//	      if (!ok) {
+//	          throw new Exception("job2 failed");
+//	      }
     }
 }
