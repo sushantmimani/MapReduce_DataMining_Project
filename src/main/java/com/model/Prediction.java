@@ -40,7 +40,6 @@ public class Prediction
             File[] files = new File("./models").listFiles();
             for (File f:files){
                 if (f.getName().endsWith(".model") ) {
-                	 System.out.println(f.getName());
                     try {
                         classifier = (Classifier) weka.core.SerializationHelper.read(f.toString());
                         } catch (Exception e) {
@@ -57,12 +56,10 @@ public class Prediction
             while ((strLineRead = br.readLine()) != null) {
                 header = strLineRead;
             }
-            System.out.println("model size: "+models.size());
             ArrayList<String> input = new ArrayList<String>(Arrays.asList(header.split(",")));
             input.remove(0);
             String temp = input.toString();
             header = temp.substring(1, temp.length()-1);
-            System.out.println("header is "+header);
         }
 
         public void map(Object key, Text values, Context context) throws IOException, InterruptedException {
@@ -106,7 +103,6 @@ public class Prediction
             testInstances1.setClassIndex(testInstances1.numAttributes()-1);
 
             int numTestInstances = testInstances1.numInstances();
-            System.out.printf("There are %d test instances\n", numTestInstances);
 
 
             Integer countZero = 0;
@@ -117,7 +113,6 @@ public class Prediction
                 try {
                     // Make the prediction here.
                     double predictionIndex = models.get(i).classifyInstance(testInstances1.instance(0));
-                    System.out.println("prediction index " +predictionIndex);
                     if(predictionIndex == 0.0)
                     	countZero++;
                     else
@@ -127,11 +122,13 @@ public class Prediction
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                if(countOne>=countZero)
-                	context.write(new Text(sampleID), new Text("1"));
-                else
-                	context.write(new Text(sampleID), new Text("0"));
+               
             }
+            
+            if(countOne>=countZero)
+            	context.write(new Text(sampleID), new Text("1"));
+            else
+            	context.write(new Text(sampleID), new Text("0"));
         }
     }
 }
