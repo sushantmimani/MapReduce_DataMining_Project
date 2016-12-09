@@ -29,6 +29,7 @@ public class ViewData {
             al.addAll(values.subList(7,8));
             al.addAll(values.subList(957, 958));
             al.addAll(values.subList(963,968));
+            al.addAll(values.subList(995,996));
             al.addAll(values.subList(1015,1016));
             al.addAll(values.subList(1024,1026));
             al.addAll(values.subList(1036,1038));
@@ -40,6 +41,16 @@ public class ViewData {
             al.addAll(values.subList(1082,1083));
             al.addAll(values.subList(1092,1098));
             al.addAll(values.subList(1101,1102));
+            al.addAll(values.subList(1236,1237));
+            al.addAll(values.subList(1246,1247));
+            al.addAll(values.subList(1280,1281));
+            al.addAll(values.subList(1465,1466));
+            al.addAll(values.subList(1542,1543));
+            al.addAll(values.subList(1591,1592));
+            al.addAll(values.subList(1616,1617));
+            al.addAll(values.subList(1641,1642));
+            al.addAll(values.subList(1650,1651));
+            al.addAll(values.subList(1654,1655));
             al.addAll(values.subList(26,27));
             return al;
         }
@@ -47,11 +58,12 @@ public class ViewData {
         public static ArrayList<String> createDatasetUnlabelled(ArrayList<String> values){
         	ArrayList<String> al = new ArrayList<String>();
         	al.addAll(values.subList(0,1));
-            al.addAll(values.subList(2,3));
+        	al.addAll(values.subList(2,3));
             al.addAll(values.subList(5, 6));
             al.addAll(values.subList(7,8));
             al.addAll(values.subList(957, 958));
             al.addAll(values.subList(963,968));
+            al.addAll(values.subList(995,996));
             al.addAll(values.subList(1015,1016));
             al.addAll(values.subList(1024,1026));
             al.addAll(values.subList(1036,1038));
@@ -63,6 +75,16 @@ public class ViewData {
             al.addAll(values.subList(1082,1083));
             al.addAll(values.subList(1092,1098));
             al.addAll(values.subList(1101,1102));
+            al.addAll(values.subList(1236,1237));
+            al.addAll(values.subList(1246,1247));
+            al.addAll(values.subList(1280,1281));
+            al.addAll(values.subList(1465,1466));
+            al.addAll(values.subList(1542,1543));
+            al.addAll(values.subList(1591,1592));
+            al.addAll(values.subList(1616,1617));
+            al.addAll(values.subList(1641,1642));
+            al.addAll(values.subList(1650,1651));
+            al.addAll(values.subList(1654,1655));
             al.addAll(values.subList(26,27));
             return al;
         }
@@ -74,11 +96,11 @@ public class ViewData {
         	if(type.equals("labeled")) {
         		ArrayList<String> al = createDatasetLabelled(values);
 	            if(!values.get(0).trim().equals("SAMPLING_EVENT_ID")) {
-	                if(!StringUtils.isNumeric(al.get(31).trim())){
-	                    al.set(31, "0");
+	                if(!StringUtils.isNumeric(al.get(42).trim())){
+	                    al.set(42, "0");
 	                }
-	                    if(StringUtils.isNumeric(al.get(31).trim()) && (Integer.parseInt(al.get(31).trim())>0)){
-	                    al.set(31, "1");
+	                    if(StringUtils.isNumeric(al.get(42).trim()) && (Integer.parseInt(al.get(42).trim())>0)){
+	                    al.set(42, "1");
 	                }
 	                String val = al.toString();
 	                val = val.substring(1,val.length()-1);

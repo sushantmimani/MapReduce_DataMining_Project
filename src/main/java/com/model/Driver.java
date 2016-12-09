@@ -23,6 +23,7 @@ public class Driver {
     public static void main(String[] args) throws Exception {
 
         Configuration conf = new Configuration();
+        
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
 //        conf.set("mapred.textoutputformat.separator", ":");
         if (otherArgs.length < 2) {
@@ -30,9 +31,9 @@ public class Driver {
             System.exit(2);
         }
 ////      Job to call the parser
+//        conf.set("data", "labeled");
 //        Job job = Job.getInstance(conf, "Extract header");
 //        job.setJarByClass(Driver.class);
-//        conf.set("data", "labeled");
 //        job.setMapperClass(ViewData.DataMapper.class);
 //        job.setOutputKeyClass(NullWritable.class);
 //        job.setOutputValueClass(Text.class);
@@ -47,25 +48,25 @@ public class Driver {
 //            throw new Exception("Job failed");
 //        }
 
-////      Job to call the parser
-//        Job job1 = Job.getInstance(conf, "Train model");
-//        job1.setJarByClass(Driver.class);
-//        job1.setMapperClass(WekaModel.WekaMapper.class);
-//        job1.setReducerClass(WekaModel.WekaReducer.class);
-//        job1.addCacheFile(new Path(otherArgs[1]+"/processedData/header-m-00000").toUri());
-//        job1.setOutputKeyClass(IntWritable.class);
-//        job1.setOutputValueClass(Text.class);
-//        FileInputFormat.addInputPath(job1, new Path(otherArgs[1]+"/processedData"));
-//        FileOutputFormat.setOutputPath(job1,
-//                new Path(otherArgs[1]+"/arff"));
-//        if (!job1.waitForCompletion(true)) {
-//            throw new Exception("Job failed");
-//        }
+//      Job to call the parser
+        Job job1 = Job.getInstance(conf, "Train model");
+        job1.setJarByClass(Driver.class);
+        job1.setMapperClass(WekaModel.WekaMapper.class);
+        job1.setReducerClass(WekaModel.WekaReducer.class);
+        job1.addCacheFile(new Path(otherArgs[1]+"/processedData/header-m-00000").toUri());
+        job1.setOutputKeyClass(IntWritable.class);
+        job1.setOutputValueClass(Text.class);
+        FileInputFormat.addInputPath(job1, new Path(otherArgs[1]+"/processedData"));
+        FileOutputFormat.setOutputPath(job1,
+                new Path(otherArgs[1]+"/arff"));
+        if (!job1.waitForCompletion(true)) {
+            throw new Exception("Job failed");
+        }
 
 ////       Job to call the parser
+//	      conf.set("data", "unlabeled");
 //	      Job job2 = Job.getInstance(conf, "Extract header");
 //	      job2.setJarByClass(Driver.class);
-//	      conf.set("data", "unlabeled");
 //	      job2.setMapperClass(ViewData.DataMapper.class);
 //	      job2.setOutputKeyClass(NullWritable.class);
 //	      job2.setOutputValueClass(Text.class);
@@ -81,19 +82,19 @@ public class Driver {
 //	      }
         
 //      //Job to predict unlabeled data
-      Job job4 = new Job(conf, "Predict data");
-      job4.setJarByClass(Driver.class);
-      job4.setMapperClass(Prediction.PredictionMapper.class);
-      job4.setNumReduceTasks(0);
-      job4.addCacheFile(new Path(otherArgs[1]+"/unlabeledData/header-m-00000").toUri());
-      job4.addCacheArchive(new Path(otherArgs[1]+"/models/").toUri());
-      job4.setOutputKeyClass(IntWritable.class);
-      job4.setOutputValueClass(Text.class);
-      FileInputFormat.addInputPath(job4, new Path(otherArgs[1]+"/unlabeledData"));
-      FileOutputFormat.setOutputPath(job4,
-              new Path(otherArgs[1]+"/predicted"));
-      if (!job4.waitForCompletion(true)) {
-          throw new Exception("Job failed");
-      }
+//      Job job4 = new Job(conf, "Predict data");
+//      job4.setJarByClass(Driver.class);
+//      job4.setMapperClass(Prediction.PredictionMapper.class);
+//      job4.setNumReduceTasks(0);
+//      job4.addCacheFile(new Path(otherArgs[1]+"/unlabeledData/header-m-00000").toUri());
+//      job4.addCacheArchive(new Path(otherArgs[1]+"/models/").toUri());
+//      job4.setOutputKeyClass(IntWritable.class);
+//      job4.setOutputValueClass(Text.class);
+//      FileInputFormat.addInputPath(job4, new Path(otherArgs[1]+"/unlabeledData"));
+//      FileOutputFormat.setOutputPath(job4,
+//              new Path(otherArgs[1]+"/predicted"));
+//      if (!job4.waitForCompletion(true)) {
+//          throw new Exception("Job failed");
+//      }
     }
 }

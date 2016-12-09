@@ -87,7 +87,7 @@ public class Prediction
             NumericToNominal convert= new NumericToNominal();
             String[] options= new String[2];
             options[0]="-R";
-            options[1]="32";  //range of variables to make nominal
+            options[1]="43";  //range of variables to make nominal
 
             Instances testInstances1 =null;
             try {

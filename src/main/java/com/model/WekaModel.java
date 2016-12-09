@@ -124,7 +124,7 @@ public class WekaModel {
 		    NumericToNominal convert= new NumericToNominal();
 	        String[] options= new String[2];
 	        options[0]="-R";
-	        options[1]="32";  //range of variables to make numeric
+	        options[1]="43";  //range of variables to make numeric
 	        
 
 	        try {
@@ -139,13 +139,13 @@ public class WekaModel {
             	newData.setClassIndex(newData.numAttributes() - 1);
           
 	        // Do 2-split cross validation
-    		Instances[][] split = crossValidationSplit(newData,2);
+    		Instances[][] split = crossValidationSplit(newData,5);
      
     	// Separate split into training and testing arrays
     		Instances[] trainingSplits = split[0];
     		Instances[] testingSplits = split[1];
     		
-    		models = new IBk();
+    		models = new IBk(5);
     	// Select model to train based on key
 //    		switch(key.get()%3) {
 //    		case 0 : models = new J48();
