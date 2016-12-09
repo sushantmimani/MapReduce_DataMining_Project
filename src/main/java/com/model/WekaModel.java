@@ -138,15 +138,6 @@ public class WekaModel {
             if (newData.classIndex() == -1)
             	newData.setClassIndex(newData.numAttributes() - 1);
           
-//            AttributeSelection filter = new AttributeSelection();  // package weka.filters.supervised.attribute!
-//	        CfsSubsetEval eval = new CfsSubsetEval();
-//	        GreedyStepwise search = new GreedyStepwise();
-//	        search.setSearchBackwards(true);
-//	        filter.setEvaluator(eval);
-//	        filter.setSearch(search);
-//	        filter.setInputFormat(newData);
-//	        Instances latestData = Filter.useFilter(newData, filter);
-
 	        // Do 2-split cross validation
     		Instances[][] split = crossValidationSplit(newData,2);
      
@@ -154,14 +145,14 @@ public class WekaModel {
     		Instances[] trainingSplits = split[0];
     		Instances[] testingSplits = split[1];
     		
-    		models = new Logistic();
-//    	// Select model to train based on key
-//    		switch(key.get()%5) {
-//    		case 0 : models = new Logistic();
+    		models = new IBk();
+    	// Select model to train based on key
+//    		switch(key.get()%3) {
+//    		case 0 : models = new J48();
+//       		break;
+//    		case 1: models = new IBk();
 //    		break;
-//    		case 1: models = new J48();
-//    		break;
-//    		case 2: models = new DecisionStump();
+//    		case 2: models = new DecisionTable();
 //    		break;
 //    		case 3: models = new IBk();
 //    		break;
@@ -180,7 +171,7 @@ public class WekaModel {
     		
     		double accuracy = calculateAccuracy(predictions);
     		System.out.println("Accuracy of model "+models.getClass().getSimpleName()+" is "+accuracy);
-				SerializationHelper.write(models.getClass().getSimpleName()+key+".model", models);
+				SerializationHelper.write("/Users/sushantmimani/Documents/NEU/MR/Project/output/models/"+models.getClass().getSimpleName()+key+".model", models);
 	        } catch (Exception e) {
 				e.printStackTrace();
 			}
