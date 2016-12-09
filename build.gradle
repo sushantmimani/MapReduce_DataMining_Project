@@ -1,9 +1,13 @@
 group 'com.datamining'
 version '1.0-SNAPSHOT'
 
-//mainClassName = "com.model.Driver"
-apply plugin: 'java'
+plugins {
+    id 'com.github.johnrengelman.shadow' version '1.2.3'
+}
 
+apply plugin: 'java'
+apply plugin: 'application'
+mainClassName = "com.model.Driver"
 //sourceCompatibility = 1.8
 
 repositories {
