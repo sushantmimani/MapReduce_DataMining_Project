@@ -47,20 +47,20 @@ public class Driver {
 //            throw new Exception("Job failed");
 //        }
 
-//      Job to call the parser
-        Job job1 = Job.getInstance(conf, "Train model");
-        job1.setJarByClass(Driver.class);
-        job1.setMapperClass(WekaModel.WekaMapper.class);
-        job1.setReducerClass(WekaModel.WekaReducer.class);
-        job1.addCacheFile(new Path(otherArgs[1]+"/processedData/header-m-00000").toUri());
-        job1.setOutputKeyClass(IntWritable.class);
-        job1.setOutputValueClass(Text.class);
-        FileInputFormat.addInputPath(job1, new Path(otherArgs[1]+"/processedData"));
-        FileOutputFormat.setOutputPath(job1,
-                new Path(otherArgs[1]+"/arff"));
-        if (!job1.waitForCompletion(true)) {
-            throw new Exception("Job failed");
-        }
+////      Job to call the parser
+//        Job job1 = Job.getInstance(conf, "Train model");
+//        job1.setJarByClass(Driver.class);
+//        job1.setMapperClass(WekaModel.WekaMapper.class);
+//        job1.setReducerClass(WekaModel.WekaReducer.class);
+//        job1.addCacheFile(new Path(otherArgs[1]+"/processedData/header-m-00000").toUri());
+//        job1.setOutputKeyClass(IntWritable.class);
+//        job1.setOutputValueClass(Text.class);
+//        FileInputFormat.addInputPath(job1, new Path(otherArgs[1]+"/processedData"));
+//        FileOutputFormat.setOutputPath(job1,
+//                new Path(otherArgs[1]+"/arff"));
+//        if (!job1.waitForCompletion(true)) {
+//            throw new Exception("Job failed");
+//        }
 
 ////       Job to call the parser
 //	      Job job2 = Job.getInstance(conf, "Extract header");
@@ -79,5 +79,21 @@ public class Driver {
 //	      if (!ok) {
 //	          throw new Exception("job2 failed");
 //	      }
+        
+//      //Job to predict unlabeled data
+      Job job4 = new Job(conf, "Predict data");
+      job4.setJarByClass(Driver.class);
+      job4.setMapperClass(Prediction.PredictionMapper.class);
+      job4.setNumReduceTasks(0);
+      job4.addCacheFile(new Path(otherArgs[1]+"/unlabeledData/header-m-00000").toUri());
+      job4.addCacheArchive(new Path(otherArgs[1]+"/models/").toUri());
+      job4.setOutputKeyClass(IntWritable.class);
+      job4.setOutputValueClass(Text.class);
+      FileInputFormat.addInputPath(job4, new Path(otherArgs[1]+"/unlabeledData"));
+      FileOutputFormat.setOutputPath(job4,
+              new Path(otherArgs[1]+"/predicted"));
+      if (!job4.waitForCompletion(true)) {
+          throw new Exception("Job failed");
+      }
     }
 }
